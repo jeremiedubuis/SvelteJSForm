@@ -1,0 +1,18 @@
+.svelte-form {
+    display: block;
+}
+
+.svelte-form-field {
+    display: block;
+}
+
+.svelte-form-field.has-error input,
+.svelte-form-field.has-error textarea,
+.svelte-form-field.has-error select {
+    border: 1px solid red;
+}
+.svelte-form-field.has-error label,
+.svelte-form-field-error {
+    color: red;
+    display: block;
+}
