@@ -10,8 +10,8 @@
         type = 'text',
         options,
         onBlur,
-        onChange,
         onFocus,
+        onInput,
         validation = {},
         ...nativeProps
     } = $$props;
@@ -39,16 +39,19 @@
         if (validation.group) form.setGroupError(validation);
     };
 
-    const _onChange = e => {
+    const _onInput = e => {
         value = isRadioOrCheckbox ? e.target.checked : e.target.value;
         if (hasBlurred) validate();
+        if (typeof onInput === 'function') onInput(e);
     };
     const _onFocus = e => {
         if (hasBlurred) validate();
+        if (typeof onFocus === 'function') onInput(e);
     };
     const _onBlur = e => {
         hasBlurred = true;
         validate();
+        if (typeof onBlur === 'function') onInput(e);
     };
 
     const typeLower = type.toLowerCase();
@@ -62,16 +65,16 @@
     {/if}
 
     {#if typeLower === TYPES.TEXTAREA }
-        <textarea id={id} {...nativeProps} on:blur={_onBlur} on:focus={_onFocus} on:input={_onChange} />
+        <textarea id={id} {...nativeProps} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} />
 
-        {:else if typeLower === TYPES.SELECT}
-        <select id={id} {...nativeProps} on:blur={_onBlur} on:focus={_onFocus} on:change={_onChange} >
+    {:else if typeLower === TYPES.SELECT}
+        <select id={id} {...nativeProps} on:blur={_onBlur} on:focus={_onFocus} on:change={_onInput} >
             {#each options as o}
                 <option value={o.value}>{o.label}</option>
             {/each}
         </select>
-        {:else}
-        <input id={id} type={typeLower} {...nativeProps} on:blur={_onBlur} on:focus={_onFocus} on:input={_onChange} />
+    {:else}
+        <input id={id} type={typeLower} {...nativeProps} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} />
     {/if}
 
     {#if label && isRadioOrCheckbox}
