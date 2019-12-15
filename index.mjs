@@ -181,8 +181,8 @@ const Form = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
 	const validations = [];
 
 	const form = {
-		register(validationFunction) {
-			validations.push(validationFunction);
+		register({ getValue, validate }) {
+			validations.push(validate);
 			return validations[validations.length - 1];
 		},
 		groups: {},
@@ -300,10 +300,13 @@ const FormField = create_ssr_component(($$result, $$props, $$bindings, $$slots) 
 	const form = getContext("form");
 	const setError = _error => error = _error;
 
-	const validateField = form.register(silent => {
-		let _error = getError(value, validation);
-		if (!silent) setError(_error);
-		return _error;
+	const validateField = form.register({
+		getValue: () => ({ [nativeProps.name]: value }),
+		validate: silent => {
+			let _error = getError(value, validation);
+			if (!silent) setError(_error);
+			return _error;
+		}
 	});
 
 	form.registerGroup(validation.group, () => value, setError);

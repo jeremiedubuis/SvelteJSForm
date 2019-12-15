@@ -9,10 +9,12 @@
     export let onSubmitError;
 
     const validations = [];
+    const values = [];
 
     const form = {
-        register(validationFunction) {
-            validations.push(validationFunction);
+        register({ getValue, validate}) {
+            values.push(getValue);
+            validations.push(validate);
             return validations[validations.length - 1];
         },
         groups: {},
@@ -59,7 +61,14 @@
             e.preventDefault();
             if (typeof onSubmitError === 'function') onSubmitError(e, errors);
         }
-        if (typeof onSubmit === 'function') onSubmit(e);
+        if (typeof onSubmit === 'function')
+            onSubmit(
+                e,
+                values.reduce(
+                    (acc, getValue) => ({...acc, ...getValue()}),
+                    {}
+                )
+            );
     };
 
     setContext('form', form);
