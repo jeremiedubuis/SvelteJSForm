@@ -60,15 +60,16 @@
         if (errors.length) {
             e.preventDefault();
             if (typeof onSubmitError === 'function') onSubmitError(e, errors);
+        } else {
+            if (typeof onSubmit === 'function')
+                onSubmit(
+                    e,
+                    values.reduce(
+                        (acc, getValue) => ({...acc, ...getValue()}),
+                        {}
+                    )
+                );
         }
-        if (typeof onSubmit === 'function')
-            onSubmit(
-                e,
-                values.reduce(
-                    (acc, getValue) => ({...acc, ...getValue()}),
-                    {}
-                )
-            );
     };
 
     setContext('form', form);
