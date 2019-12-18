@@ -330,7 +330,15 @@
     	form.registerGroup(validation.group, () => value, setError);
 
     	const typeLower = type.toLowerCase();
-    	const getHTMLProps = () => ({ name, disabled, readonly, placeholder });
+
+    	const getHTMLProps = () => ({
+    		name,
+    		disabled,
+    		readonly,
+    		placeholder,
+    		value
+    	});
+
     	if ($$props.className === void 0 && $$bindings.className && className !== void 0) $$bindings.className(className);
     	if ($$props.id === void 0 && $$bindings.id && id !== void 0) $$bindings.id(id);
     	if ($$props.label === void 0 && $$bindings.label && label !== void 0) $$bindings.label(label);
