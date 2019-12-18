@@ -3,22 +3,25 @@
     import { TYPES } from './consts';
     import { libClassName } from './helpers/configuration';
     import { getError } from './helpers/validation';
-    $: ({
-        className = '',
-        id,
-        label,
-        type = 'text',
-        options,
-        onBlur,
-        onFocus,
-        onInput,
-        validation = {},
-        ...nativeProps
-    } = $$props);
+
+    export let className = '';
+    export let id;
+    export let label;
+    export let type = 'text';
+    export let options;
+    export let onBlur;
+    export let onFocus;
+    export let onInput;
+    export let validation = {};
+    export let value;
+
+    export let disabled;
+    export let readonly;
+    export let placeholder;
+    export let name;
 
     let hasBlurred = false;
     let error = null;
-    let value = nativeProps.value;
 
     const isRadioOrCheckbox = type === TYPES.CHECKBOX || type === TYPES.RADIO;
 
@@ -27,7 +30,7 @@
     const setError = _error => error = _error;
 
     const validateField = form.register({
-        getValue: () => ({ [nativeProps.name]: value}),
+        getValue: () => ({ [name]: value}),
         validate: (silent) => {
             let _error = getError(value, validation);
             if (!silent) setError(_error);
@@ -58,6 +61,7 @@
     };
 
     const typeLower = type.toLowerCase();
+    const getHTMLProps = () => ({ name, disabled, readonly, placeholder});
 
 </script>
 
@@ -68,16 +72,16 @@
     {/if}
 
     {#if typeLower === TYPES.TEXTAREA }
-        <textarea id={id} {...nativeProps} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} />
+        <textarea id={id} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} />
 
     {:else if typeLower === TYPES.SELECT}
-        <select id={id} {...nativeProps} on:blur={_onBlur} on:focus={_onFocus} on:change={_onInput} >
+        <select id={id} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:change={_onInput} >
             {#each options as o}
                 <option value={o.value}>{o.label}</option>
             {/each}
         </select>
     {:else}
-        <input id={id} type={typeLower} {...nativeProps} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} />
+        <input id={id} type={typeLower} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} />
     {/if}
 
     {#if label && isRadioOrCheckbox}
