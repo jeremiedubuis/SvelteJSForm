@@ -181,9 +181,9 @@
 
     const Form = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
     	let { id } = $$props;
-    	let { className } = $$props;
-    	let { onSubmit } = $$props;
-    	let { onSubmitError } = $$props;
+    	let { className = undefined } = $$props;
+    	let { onSubmit = undefined } = $$props;
+    	let { onSubmitError = undefined } = $$props;
     	const validations = [];
 
     	const form = {
@@ -301,17 +301,17 @@
     const FormField = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
     	let { className = "" } = $$props;
     	let { id } = $$props;
-    	let { label } = $$props;
+    	let { label = undefined } = $$props;
     	let { type = "text" } = $$props;
-    	let { options } = $$props;
-    	let { onBlur } = $$props;
-    	let { onFocus } = $$props;
-    	let { onInput } = $$props;
+    	let { options = undefined } = $$props;
+    	let { onBlur = undefined } = $$props;
+    	let { onFocus = undefined } = $$props;
+    	let { onInput = undefined } = $$props;
     	let { validation = {} } = $$props;
-    	let { value } = $$props;
-    	let { disabled } = $$props;
-    	let { readonly } = $$props;
-    	let { placeholder } = $$props;
+    	let { value = undefined } = $$props;
+    	let { disabled = undefined } = $$props;
+    	let { readonly = undefined } = $$props;
+    	let { placeholder = undefined } = $$props;
     	let { name } = $$props;
     	let error = null;
     	const isRadioOrCheckbox = type === TYPES.CHECKBOX || type === TYPES.RADIO;
@@ -330,15 +330,6 @@
     	form.registerGroup(validation.group, () => value, setError);
 
     	const typeLower = type.toLowerCase();
-
-    	const getHTMLProps = () => ({
-    		name,
-    		disabled,
-    		readonly,
-    		placeholder,
-    		value
-    	});
-
     	if ($$props.className === void 0 && $$bindings.className && className !== void 0) $$bindings.className(className);
     	if ($$props.id === void 0 && $$bindings.id && id !== void 0) $$bindings.id(id);
     	if ($$props.label === void 0 && $$bindings.label && label !== void 0) $$bindings.label(label);
@@ -353,6 +344,14 @@
     	if ($$props.readonly === void 0 && $$bindings.readonly && readonly !== void 0) $$bindings.readonly(readonly);
     	if ($$props.placeholder === void 0 && $$bindings.placeholder && placeholder !== void 0) $$bindings.placeholder(placeholder);
     	if ($$props.name === void 0 && $$bindings.name && name !== void 0) $$bindings.name(name);
+
+    	let getHTMLProps = () => ({
+    		name,
+    		disabled,
+    		readonly,
+    		placeholder,
+    		value
+    	});
 
     	return `<div class="${escape(libClassName) + "-field is-" + escape(typeLower) + " " + escape(className) + " " + escape(error ? "has-error" : "")}">
 

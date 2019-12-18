@@ -61,7 +61,7 @@
     };
 
     const typeLower = type.toLowerCase();
-    const getHTMLProps = () => ({ name, disabled, readonly, placeholder, value});
+    $: getHTMLProps = () => ({ name, disabled, readonly, placeholder, value});
 
 </script>
 
