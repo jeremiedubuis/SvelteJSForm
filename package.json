@@ -5,7 +5,7 @@
   "svelte": "src/index.js",
   "module": "index.mjs",
   "main": "index.js",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "repository": "git+https://github.com/jeremiedubuis/SvelteForm.git",
   "scripts": {
     "build": "rollup -c",
