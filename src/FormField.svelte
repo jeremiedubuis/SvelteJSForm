@@ -18,7 +18,7 @@
 
     let hasBlurred = false;
     let error = null;
-    let value;
+    let value = nativeProps.value;
 
     const isRadioOrCheckbox = type === TYPES.CHECKBOX || type === TYPES.RADIO;
 
