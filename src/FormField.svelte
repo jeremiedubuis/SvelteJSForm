@@ -3,7 +3,7 @@
     import { TYPES } from './consts';
     import { libClassName } from './helpers/configuration';
     import { getError } from './helpers/validation';
-    const {
+    $: ({
         className = '',
         id,
         label,
@@ -14,7 +14,7 @@
         onInput,
         validation = {},
         ...nativeProps
-    } = $$props;
+    } = $$props);
 
     let hasBlurred = false;
     let error = null;
