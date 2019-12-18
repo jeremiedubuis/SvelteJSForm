@@ -6,18 +6,18 @@
 
     export let className = '';
     export let id;
-    export let label;
+    export let label = undefined;
     export let type = 'text';
-    export let options;
-    export let onBlur;
-    export let onFocus;
-    export let onInput;
+    export let options = undefined;
+    export let onBlur = undefined;
+    export let onFocus = undefined;
+    export let onInput = undefined;
     export let validation = {};
-    export let value;
+    export let value = undefined;
 
-    export let disabled;
-    export let readonly;
-    export let placeholder;
+    export let disabled = undefined;
+    export let readonly = undefined;
+    export let placeholder = undefined;
     export let name;
 
     let hasBlurred = false;

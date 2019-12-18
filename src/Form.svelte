@@ -4,9 +4,9 @@
     import {ERRORS} from './consts';
 
     export let id;
-    export let className;
-    export let onSubmit;
-    export let onSubmitError;
+    export let className = undefined;
+    export let onSubmit = undefined;
+    export let onSubmitError = undefined;
 
     const validations = [];
     const values = [];
