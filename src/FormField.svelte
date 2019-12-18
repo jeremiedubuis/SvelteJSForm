@@ -13,7 +13,7 @@
     export let onFocus = undefined;
     export let onInput = undefined;
     export let validation = {};
-    export let value = undefined;
+    export let value = "";
 
     export let disabled = undefined;
     export let readonly = undefined;
@@ -61,7 +61,14 @@
     };
 
     const typeLower = type.toLowerCase();
-    $: getHTMLProps = () => ({ name, disabled, readonly, placeholder, value});
+    $: getHTMLProps = () => {
+        const p = { name, readonly};
+        if (typeof disabled !== 'undefined') p.disabled = disabled;
+        if (typeof readonly !== 'undefined') p.readonly = readonly;
+        if (typeof value !== 'undefined') p.value = value;
+        if (typeof placeholder !== 'undefined') p.placeholder = placeholder;
+        return p;
+    };
 
 </script>
 
