@@ -84,7 +84,7 @@
     {:else if typeLower === TYPES.SELECT}
         <select id={id} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:change={_onInput} >
             {#each options as o}
-                <option value={o.value}>{o.label}</option>
+                <option value={o.value} selected={o.selected}>{o.label}</option>
             {/each}
         </select>
     {:else}
