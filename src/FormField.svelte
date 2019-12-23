@@ -10,6 +10,7 @@
     export let type = 'text';
     export let options = undefined;
     export let onBlur = undefined;
+    export let onChange = undefined;
     export let onFocus = undefined;
     export let onInput = undefined;
     export let validation = {};
@@ -79,16 +80,16 @@
     {/if}
 
     {#if typeLower === TYPES.TEXTAREA }
-        <textarea id={id} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} />
+        <textarea id={id} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} on:change={onChange}/>
 
     {:else if typeLower === TYPES.SELECT}
-        <select id={id} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:change={_onInput} >
+        <select id={id} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:change={_onInput} on:change={onChange} >
             {#each options as o}
                 <option value={o.value} selected={o.selected}>{o.label}</option>
             {/each}
         </select>
     {:else}
-        <input id={id} type={typeLower} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} />
+        <input id={id} type={typeLower} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} on:change={onChange}/>
     {/if}
 
     {#if label && isRadioOrCheckbox}
