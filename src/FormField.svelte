@@ -71,6 +71,9 @@
         return p;
     };
 
+    $:if (typeLower === TYPES.SELECT && !value && typeof Array.isArray(options) && options.length)
+        value = (options.find(({ selected }) => selected) || options[0] ).value;
+
 </script>
 
 <div  class="{libClassName}-field is-{typeLower} {className} {error ? 'has-error' : ''}">
