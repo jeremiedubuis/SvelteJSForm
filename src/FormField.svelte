@@ -21,6 +21,7 @@
     export let placeholder = undefined;
     export let name;
 
+    let isFocused = false;
     let hasBlurred = false;
     let error = null;
 
@@ -52,10 +53,12 @@
         if (typeof onInput === 'function') onInput(e);
     };
     const _onFocus = e => {
+        isFocused = true;
         if (hasBlurred) validate();
         if (typeof onFocus === 'function') onInput(e);
     };
     const _onBlur = e => {
+        isFocused = false;
         hasBlurred = true;
         validate();
         if (typeof onBlur === 'function') onInput(e);
@@ -74,9 +77,18 @@
     $:if (typeLower === TYPES.SELECT && !value && typeof Array.isArray(options) && options.length)
         value = (options.find(({ selected }) => selected) || options[0] ).value;
 
+    $: getClassName = () => {
+        const c = [`${libClassName}-field`, `is-${typeLower}`];
+        if (className) c.push(className);
+        if (error) c.push('has-error');
+        if (isFocused) c.push('is-focused');
+        if (typeof value !== 'undefined' && value !== '') c.push('has-value');
+        return c.join(' ');
+    }
+
 </script>
 
-<div  class="{libClassName}-field is-{typeLower} {className} {error ? 'has-error' : ''}">
+<div class="{getClassName()}">
 
     {#if label && !isRadioOrCheckbox}
         <label for={id}>{label}</label>
