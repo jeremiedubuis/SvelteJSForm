@@ -12,15 +12,15 @@
     const values = [];
 
     const form = {
-        register({ getValue, validate}) {
-            values.push(getValue);
+        register({ getNameValue, validate}) {
+            values.push(getNameValue);
             validations.push(validate);
             return validations[validations.length - 1];
         },
         groups: {},
-        registerGroup(group, getValue, setError) {
+        registerGroup(group, getNameValue, setError) {
             if (!this.groups[group]) this.groups[group] = [];
-            this.groups[group].push({getValue, setError});
+            this.groups[group].push({getNameValue, setError});
         },
         validate() {
             const errors = [];
@@ -34,8 +34,8 @@
         getGroupError(validation) {
             let totalWithValue = 0;
             let identical;
-            this.groups[validation.group].forEach(({getValue}) => {
-                let val = getValue();
+            this.groups[validation.group].forEach(({getNameValue}) => {
+                let [name, val] = getNameValue();
                 if (validation.identicalGroup && val && !identical) identical = val;
                 totalWithValue += typeof val === 'undefined' || val === false || val === '' || (validation.identicalGroup && val !== identical) ? 0 : 1;
             });
@@ -65,7 +65,17 @@
                 onSubmit(
                     e,
                     values.reduce(
-                        (acc, getValue) => ({...acc, ...getValue()}),
+                        (acc, getValue) => {
+                            let [name, value] = getValue();
+                            if (name.indexOf('[]') > -1) {
+                                name = name.replace('[]', '');
+                                if (!acc[name]) acc[name] = [];
+                                acc[name].push(value);
+                                return acc;
+                            }
+                            acc[name] = value;
+                            return acc;
+                        },
                         {}
                     )
                 );

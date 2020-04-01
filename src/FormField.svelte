@@ -32,7 +32,7 @@
     const setError = _error => error = _error;
 
     const validateField = form.register({
-        getValue: () => ({ [name]: value}),
+        getNameValue: () => [name, value],
         validate: (silent) => {
             let _error = getError(value, validation);
             if (!silent) setError(_error);
