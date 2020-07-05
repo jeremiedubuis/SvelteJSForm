@@ -4,28 +4,30 @@
     import { libClassName } from './helpers/configuration';
     import { getError } from './helpers/validation';
 
-    export let className = '';
-    export let id;
-    export let label = undefined;
-    export let type = 'text';
-    export let options = undefined;
-    export let onBlur = undefined;
-    export let onChange = undefined;
-    export let onFocus = undefined;
-    export let onInput = undefined;
-    export let validation = {};
-    export let value = "";
-
-    export let disabled = undefined;
-    export let readonly = undefined;
-    export let placeholder = undefined;
-    export let name;
+    $: ({
+        checked,
+        className = '',
+        id,
+        label = undefined,
+        name,
+        type = 'text',
+        options = undefined,
+        onBlur = undefined,
+        onChange = undefined,
+        onFocus = undefined,
+        onInput = undefined,
+        validation = {},
+        value = '',
+        ...nativeProps
+    } = $$props);
 
     let isFocused = false;
     let hasBlurred = false;
     let error = null;
 
-    const isRadioOrCheckbox = type === TYPES.CHECKBOX || type === TYPES.RADIO;
+    $: typeLower = type.toLowerCase();
+    $: isRadioOrCheckbox = typeLower === TYPES.CHECKBOX || type === TYPES.RADIO;
+    $: isChecked = checked || false;
 
     const form = getContext('form');
 
@@ -40,7 +42,7 @@
         }
     });
 
-    form.registerGroup(validation.group, () => value, setError);
+    $: form.registerGroup(validation.group, () => value, setError);
 
     const validate = () => {
         validateField();
@@ -48,10 +50,18 @@
     };
 
     const _onInput = e => {
-        value = isRadioOrCheckbox ? e.target.checked : e.target.value;
+        value = isRadioOrCheckbox ? e.target.checked ? e.target.value || true : false : e.target.value;
         if (hasBlurred) validate();
         if (typeof onInput === 'function') onInput(e);
     };
+
+    const _onChange = e => {
+        if (isRadioOrCheckbox) {
+            isChecked = !isChecked;
+        }
+        if (typeof onChange === 'function') onChange(e);
+    };
+
     const _onFocus = e => {
         isFocused = true;
         if (hasBlurred) validate();
@@ -64,13 +74,10 @@
         if (typeof onBlur === 'function') onInput(e);
     };
 
-    const typeLower = type.toLowerCase();
     $: getHTMLProps = () => {
-        const p = { name, readonly};
-        if (typeof disabled !== 'undefined') p.disabled = disabled;
-        if (typeof readonly !== 'undefined') p.readonly = readonly;
+        const p = { ...nativeProps };
         if (typeof value !== 'undefined') p.value = value;
-        if (typeof placeholder !== 'undefined') p.placeholder = placeholder;
+        if (isRadioOrCheckbox) p.checked = isChecked;
         return p;
     };
 
@@ -104,7 +111,7 @@
             {/each}
         </select>
     {:else}
-        <input id={id} type={typeLower} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} on:change={onChange}/>
+        <input id={id} type={typeLower} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} on:change={_onChange}/>
     {/if}
 
     {#if label && isRadioOrCheckbox}
