@@ -1,7 +1,7 @@
 <script>
     import { getContext } from 'svelte';
     import { TYPES } from './consts';
-    import { libClassName } from './helpers/configuration';
+    import { libClassName, extraTypes } from './helpers/configuration';
     import { getError } from './helpers/validation';
 
     $: ({
@@ -17,9 +17,11 @@
         onFocus = undefined,
         onInput = undefined,
         validation = {},
-        value = '',
+        value: providedValue,
         ...nativeProps
     } = $$props);
+
+    export let value = '';
 
     let isFocused = false;
     let hasBlurred = false;
@@ -110,6 +112,19 @@
                 <option value={o.value} selected={o.selected}>{o.label}</option>
             {/each}
         </select>
+    {:else if extraTypes[typeLower]}
+        <svelte:component
+                this={extraTypes[typeLower]}
+                {...nativeProps}
+                options={options}
+                id={id}
+                onFocus={_onFocus}
+                onBlur={_onBlur}
+                onInput={_onInput}
+                onChange={_onChange}
+                validate={validate}
+                setValue={(v) => value = v}
+                bind:value={value} />
     {:else}
         <input id={id} type={typeLower} {...getHTMLProps()} on:blur={_onBlur} on:focus={_onFocus} on:input={_onInput} on:change={_onChange}/>
     {/if}

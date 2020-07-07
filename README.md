@@ -97,3 +97,19 @@ setConfiguration({
     defaultGroupMessage: 'At least {x} fields must be filled in';
 });
 ```
+
+## Custom form component registration
+
+You can register libraries or custom components as form components with the 
+registerComponent function. The target component will receive the onInput, 
+onFocus, onBlur, onChange methods that will need to be bound to appropriate events.
+
+```
+import { registerComponent } from 'sveltejs-form';
+import { AutoComplete } from 'svelte-auto-completion';
+// the AutoComplete component takes onInput, onFocus, onBlur props
+registerComponent('autocomplete', AutoComplete);
+
+<FormField type="autocomplete" label="Autocomplete custom field" options={['albert', 'bertrand']} minLength={1} validation={{ mandatory: true}} />
+
+```
